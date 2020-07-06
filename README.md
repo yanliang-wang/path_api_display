@@ -6,7 +6,7 @@ Provide route planning from Gaode or Baidu Map API and display route
 ## 1. 准备
 
 ```
-$ cd gps_display
+$ cd path_api_display
 $ catkin_make
 $ source devel/setup.bash
 ```
@@ -29,11 +29,11 @@ video：https://youtu.be/e1X4xJVJvRE
 
 lyrs=y
 
-![](/home/wang/wang/git_files/gps_display/png/y.png)
+![](./png/y.png)
 
 lyrs=r
 
-![](/home/wang/wang/git_files/gps_display/png/r.png)
+![](./png/r.png)
 
 ## 4. 引用
 
