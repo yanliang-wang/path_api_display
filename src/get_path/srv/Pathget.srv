@@ -1,0 +1,8 @@
+#本服务是根据输入的起点和终点坐标，调用高德地图返回起点到终点的路径
+#输入为gcj02格式的起点坐标，输出为gcj02格式的终点坐标
+#输出为路径经过的各个点的gcj02格式位置
+float32[2] origin_point
+float32[2] destination_point
+---
+sensor_msgs/NavSatFix[] pathfeedback
+int32 points_num

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- RVIZ -->
+    <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find get_path)/launch/demo.rviz" output="screen"/>
+
+    <!-- Path client -->
+    <node name="path_client" pkg="get_path" type="path_client.py" output="screen">
+    </node>
+
+    <!-- Path server -->
+    <node name="path_server" pkg="get_path" type="path_server.py" output="screen">
+    </node>
+
+    <!-- Path publisher -->
+    <node name="gps_path_pub" pkg="gps_path_pub" type="gps_path_pub" output="screen">
+    </node>
+
+    <!-- bag file -->
+    <node name="bag_play" pkg="rosbag" type="play"  output="screen" args="--clock $(find get_path)/launch/demo.bag"/>
+
+
+</launch>

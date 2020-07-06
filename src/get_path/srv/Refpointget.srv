@@ -1,0 +1,3 @@
+#get the origin_point (gcj02表示）含有高度
+---
+float64[3] origin_point
