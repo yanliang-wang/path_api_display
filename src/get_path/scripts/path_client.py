@@ -26,15 +26,17 @@ def get_path_points():
     global ref_point
     global origin_point
 
-    """当参考点无效时，#获取参考坐标的位置，用于发布规划的路径"""
+    """当参考点无效时，直接返回"""
     if ref_point[0] > 999999999:
-        try:
-            ref_point_client = rospy.ServiceProxy("/get_ref_point", Refpointget)  # 创建（返回起点值）服务的client
-            resp1 = ref_point_client.call()  # 调用服务，得到起点经纬度的wgs84表示
-            ref_point = list(resp1.origin_point)  # 本来得到数据类型的是元组，(lat0,lon0,h0)
-            rospy.loginfo("/get_ref_point Service call successfully")
-        except rospy.ServiceException, e:
-            rospy.logwarn("/get_ref_point Service call failed: %s" % e)
+        rospy.logwarn("Current reference point is invalid!")
+        return
+        # try:
+        #     ref_point_client = rospy.ServiceProxy("/get_ref_point", Refpointget)  # 创建（返回起点值）服务的client
+        #     resp1 = ref_point_client.call()  # 调用服务，得到起点经纬度的wgs84表示
+        #     ref_point = list(resp1.origin_point)  # 本来得到数据类型的是元组，(lat0,lon0,h0)
+        #     rospy.loginfo("/get_ref_point Service call successfully")
+        # except rospy.ServiceException, e:
+        #     rospy.logwarn("/get_ref_point Service call failed: %s" % e)
 
     # 将起点和终点的ENU坐标转换为wgs84表示的终点经纬度坐标
     destination_wgs84 = list(enu_to_geodetic(destination_enu[0], destination_enu[1], 0, \
@@ -84,6 +86,8 @@ def get_destination(destination):
 
     if origin_enu[0] < 999999999 :
         get_path_points();
+    else:
+        rospy.logwarn("Current origin point is invalid!")
 
 def get_origin(origin):
     global destination_enu
@@ -91,11 +95,13 @@ def get_origin(origin):
     origin_enu = [origin.pose.pose.position.x, origin.pose.pose.position.y]
     if destination_enu[0] < 999999999 :
         get_path_points();
+    else:
+        rospy.logwarn("Current destination point is invalid!")
 
 if __name__=="__main__":
     destination_enu = [float("inf"),float("inf")]
     origin_enu =  [float("inf"),float("inf")]
-    ref_point = [float("inf"),float("inf"),float("inf")]
+    ref_point = [41.653012, 123.422713, 0.0] # 41.653012 123.422713 0.0
 
     dflag = 0#终点位置是否更新的标志
     rflag = 0#起点位置是否更新的标志
@@ -103,18 +109,22 @@ if __name__=="__main__":
     rospy.init_node('path_client', anonymous=True)
     
     #等待需要是要的服务
-    rospy.loginfo("Waiting Service : /get_ref_point");
-    rospy.wait_for_service("/get_ref_point")#阻塞等待，检测到有名为“path_get_service”的service后，才往下执行程序
-    rospy.loginfo("Ready Service : /get_ref_point");
-
     rospy.loginfo("Waiting Service : /path_get_service");
     rospy.wait_for_service("/path_get_service")#阻塞等待，检测到有名为“path_get_service”的service后，才往下执行程序
     rospy.loginfo("Ready Service : /path_get_service");
 
     #Publisher函数第一个参数是topic的名称，第二个参数是接受的数据类型 第三个参数是回调函数的名称
     pub = rospy.Publisher('/path_info', Path, queue_size=100)
+    pub_ref = rospy.Publisher('/ref_point_wgs84', NavSatFix, queue_size=10)
 
     rospy.Subscriber('/move_base_simple/goal', PoseStamped, get_destination)
     rospy.Subscriber('/initialpose', PoseWithCovarianceStamped, get_origin)
-    
+    rate = rospy.Rate(100)
+    while not rospy.is_shutdown():
+        msg = NavSatFix()
+        msg.latitude = ref_point[0]
+        msg.longitude = ref_point[1]
+        msg.altitude = ref_point[2]
+        pub_ref.publish(msg)
+        rate.sleep()
     rospy.spin()#spin()反复检查是否有消息并调用callback_client_srv

@@ -7,3 +7,4 @@ src/CMakeLists.txt
 .catkin_workspace
 src/rviz_satellite/mapscache/
 **.pyc
+src/venv/

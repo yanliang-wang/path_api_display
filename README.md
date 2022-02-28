@@ -1,9 +1,7 @@
 # path_api_display
-Provide route planning from Gaode or Baidu Map API and display route 
+Provide path planning from Gaode or Baidu Map API.
 
-
-
-## 1. 准备
+## 1. Build
 
 ```
 $ cd path_api_display
@@ -17,26 +15,19 @@ $ source devel/setup.bash
 $ roslaunch get_path demo.launch
 ```
 
-本程序中起点是gps当前的位置，然后使用rviz的2D Nav Goal来确定终点位置，即可显示，如下图的规划轨迹
+This project can output the route points given the start point and destination point.
 
-<img src="./png/get_path.png" style="zoom: 50%;" />
+In Rviz, you can set the start point by pressing `2D Pose Estimate`(whose shortcut is `p`) and set the destination point by pressing `2D Nav Goal`(whose shortcut is `g`).
 
-video：https://youtu.be/e1X4xJVJvRE
+<img src="./img/rviz_plan_demo.gif" style="zoom: 50%;" />
 
-## 3. 地图显示格式
+video: [Youtube link](https://youtu.be/Dpgqhs1Kx4U), [Bilibili link](https://www.bilibili.com/video/BV1fr4y1z7Ds/) 
 
-该插件设置的参数不同，显示不同，详见gps_path_pub/README.md
+## 3. Reference
 
-lyrs=y
+1. [rviz_satellite](https://github.com/gareth-cross/rviz_satellite), which is a rviz plugin that displays the map in rviz according to the tile map URL.(use `1e7b2a7` commit)
+3. [coordTransform_py](https://github.com/wandergis/coordTransform_py), which is a tool provides the transformation between gcj02, bd09 and wgs84.
 
-![](./png/y.png)
+## 4. Attention
 
-lyrs=r
-
-![](./png/r.png)
-
-## 4. 引用
-
-1. [rviz_satellite](https://github.com/gareth-cross/rviz_satellite)，rviz插件，根据瓦片地图URL在rviz里面显示地图，该工作空间使用其`1e7b2a7d0becae132b24c15c9fc3eebf119f49c2` commit
-2. [gps_path_pub](https://github.com/rpng/gps_path_pub)，根据不同时刻的gps位置来发布路径
-3. [coordTransform_py](https://github.com/wandergis/coordTransform_py)，提供gcj02,bd09,wgs84坐标系之间的转换
+In order to facilitate your testing for this repository, I used the API key I applied on the official website. If you want to use this project, please apply for the API yourself.

@@ -12,12 +12,4 @@
     <node name="path_server" pkg="get_path" type="path_server.py" output="screen">
     </node>
 
-    <!-- Path publisher -->
-    <node name="gps_path_pub" pkg="gps_path_pub" type="gps_path_pub" output="screen">
-    </node>
-
-    <!-- bag file -->
-    <node name="bag_play" pkg="rosbag" type="play"  output="log" args="-l --clock $(find get_path)/launch/demo.bag"/>
-
-
 </launch>
