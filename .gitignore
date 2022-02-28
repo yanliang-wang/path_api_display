@@ -1,0 +1,9 @@
+build/
+devel/
+.vscode/
+src/cmake-build-debug/
+src/.idea/
+src/CMakeLists.txt
+.catkin_workspace
+src/rviz_satellite/mapscache/
+**.pyc

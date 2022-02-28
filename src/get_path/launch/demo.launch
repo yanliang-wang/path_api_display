@@ -17,7 +17,7 @@
     </node>
 
     <!-- bag file -->
-    <node name="bag_play" pkg="rosbag" type="play"  output="screen" args="--clock $(find get_path)/launch/demo.bag"/>
+    <node name="bag_play" pkg="rosbag" type="play"  output="log" args="-l --clock $(find get_path)/launch/demo.bag"/>
 
 
 </launch>
